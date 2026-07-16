@@ -35,8 +35,10 @@ export default function ControlsHint({ started, hudScale = 100 }: ControlsHintPr
 
   return (
     <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="controls.png"
+        alt="Controls Hint"
         className={`absolute bottom-5 left-5 w-[300px] pointer-events-none select-none transition-opacity duration-1000 ${
           visible ? "opacity-100" : "opacity-0"
         }`}

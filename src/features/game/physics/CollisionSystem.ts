@@ -220,7 +220,7 @@ export class CollisionSystem {
   ): THREE.Vector3 | null {
     let maxPenetration = 0;
     let bestMTV: THREE.Vector3 | null = null;
-    let debugInfo = '';
+    let _debugInfo = '';
     let colliderIndex = 0;
     
     // Check against all colliders
@@ -277,7 +277,7 @@ export class CollisionSystem {
         }
         bestMTV = normal.multiplyScalar(penetration);
         const colliderSize = new THREE.Vector3().subVectors(collider.max, collider.min);
-        debugInfo = `[Collider ${colliderIndex}] pen=${penetration.toFixed(3)}, dist=${dist.toFixed(3)}, normal=(${normal.x.toFixed(2)},${normal.y.toFixed(2)},${normal.z.toFixed(2)}), box min=(${collider.min.x.toFixed(1)},${collider.min.y.toFixed(1)},${collider.min.z.toFixed(1)}), box max=(${collider.max.x.toFixed(1)},${collider.max.y.toFixed(1)},${collider.max.z.toFixed(1)}), size=(${colliderSize.x.toFixed(1)},${colliderSize.y.toFixed(1)},${colliderSize.z.toFixed(1)}), capsuleCenter=(${capsuleCenter.x.toFixed(1)},${capsuleCenter.y.toFixed(1)},${capsuleCenter.z.toFixed(1)})`;
+        _debugInfo = `[Collider ${colliderIndex}] pen=${penetration.toFixed(3)}, dist=${dist.toFixed(3)}, normal=(${normal.x.toFixed(2)},${normal.y.toFixed(2)},${normal.z.toFixed(2)}), box min=(${collider.min.x.toFixed(1)},${collider.min.y.toFixed(1)},${collider.min.z.toFixed(1)}), box max=(${collider.max.x.toFixed(1)},${collider.max.y.toFixed(1)},${collider.max.z.toFixed(1)}), size=(${colliderSize.x.toFixed(1)},${colliderSize.y.toFixed(1)},${colliderSize.z.toFixed(1)}), capsuleCenter=(${capsuleCenter.x.toFixed(1)},${capsuleCenter.y.toFixed(1)},${capsuleCenter.z.toFixed(1)})`;
       }
     }
     
@@ -292,7 +292,7 @@ export class CollisionSystem {
    * Push player out if they are inside a collider
    * Uses single-step MTV for stable, non-vibrating resolution
    */
-  public pushOutOfColliders(position: THREE.Vector3, onGround: boolean = false): THREE.Vector3 {
+  public pushOutOfColliders(position: THREE.Vector3, _onGround: boolean = false): THREE.Vector3 {
     const capsuleBottom = position.clone();
     capsuleBottom.y += this.playerRadius;
     const capsuleTop = position.clone();

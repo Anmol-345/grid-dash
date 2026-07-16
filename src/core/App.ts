@@ -62,7 +62,7 @@ function createEmptyStats(): StoredStats {
   gameRunning: boolean = false;
 
   generatorMetadata?: Map<string, {
-    config: any;
+    config: unknown;
     position: { x: number; y: number; z: number };
     targets: Target[];
   }>;
@@ -444,7 +444,7 @@ function createEmptyStats(): StoredStats {
 
 
 
-  update(deltaTime: number) {
+  update(_deltaTime: number) {
     if (!this.gameRunning || this.paused) return;
 
 

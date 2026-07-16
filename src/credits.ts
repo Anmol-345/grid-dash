@@ -90,7 +90,7 @@ const iAm = (name: string, role: Role, link: string) => {
 };
 
 // @ts-ignore We will use this function later if the team grows
-const weAre = (names: string[], roles: Role[], links: string[]) => {
+const _weAre = (names: string[], roles: Role[], links: string[]) => {
   // Basic validation to avoid mismatched arrays
   if (names.length !== roles.length || names.length !== links.length) {
     message += "  (credits data mismatch: names/roles/links must have same length)\n";

@@ -5,8 +5,8 @@ type Props = {
 };
 
 export default function PingDisplay({ wsManager }: Props) {
-  const [ping, setPing] = useState(0);
-  const [visible, setVisible] = useState(false);
+  const [_ping, setPing] = useState(0);
+  const [_visible, setVisible] = useState(false);
 
   useEffect(() => {
     // Check if Ping should be shown

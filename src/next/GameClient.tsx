@@ -7,6 +7,11 @@ import { telemetry } from "@/systems/TelemetryManager";
 import { type SessionPayload } from "@/systems/SessionExporter";
 import { GAME_DURATION_SECONDS } from "@/config/gameConfig";
 
+interface CustomWindow extends Window {
+  __uiController?: UIController;
+  __appInstance?: App;
+}
+
 export default function GameClient() {
   const [stats, setStats] = useState({ score: 0, accuracy: 0, streak: 0, hits: 0, misses: 0, peakStreak: 0, avgTimePerTarget: 0 });
   const [time, setTime] = useState(GAME_DURATION_SECONDS);
@@ -59,9 +64,9 @@ export default function GameClient() {
       appInstance.attachUI(uiController);
       
       // Expose globally for handleMainMenu
-      (window as any).__uiController = uiController;
+      (window as unknown as CustomWindow).__uiController = uiController;
       // We store the app instance on window for the timer loop to access it
-      (window as any).__appInstance = appInstance;
+      (window as unknown as CustomWindow).__appInstance = appInstance;
     };
 
     void start();
@@ -86,7 +91,7 @@ export default function GameClient() {
     const interval = setInterval(() => {
       if (!gameStarted || gameEnded) return;
       
-      const app = (window as any).__appInstance;
+      const app = (window as unknown as CustomWindow).__appInstance;
       if (!app) return;
 
       if (app.gameStartTime !== null) {
@@ -108,7 +113,7 @@ export default function GameClient() {
 
 
   const handleMainMenu = () => {
-    const app = (window as any).__appInstance;
+    const app = (window as unknown as CustomWindow).__appInstance;
     if (app) {
       setGameEnded(false);
       setGameStarted(false);
@@ -116,7 +121,7 @@ export default function GameClient() {
       telemetry.reset();
       
       // Tell UIRoot to go back to the menu
-      const uiCtrl = (window as any).__uiController;
+      const uiCtrl = (window as unknown as CustomWindow).__uiController;
       if (uiCtrl?.showMenu) {
         uiCtrl.showMenu();
       }

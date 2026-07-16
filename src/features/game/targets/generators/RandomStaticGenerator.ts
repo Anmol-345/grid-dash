@@ -33,8 +33,8 @@ export class RandomStaticGenerator implements ITargetGenerator {
     const forwardAngle = playerYaw ?? 0;
     
     // Calculate forward direction from yaw
-    const forwardX = Math.cos(forwardAngle);
-    const forwardZ = Math.sin(forwardAngle);
+    const _forwardX = Math.cos(forwardAngle);
+    const _forwardZ = Math.sin(forwardAngle);
 
     while (targets.length < count && attempts < maxAttempts) {
       attempts++;
