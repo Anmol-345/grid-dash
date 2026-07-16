@@ -1,0 +1,80 @@
+import { createRoot } from "react-dom/client";
+import UIRoot from "./UIRoot";
+import type { TimerController, TimerHint } from "@/features/game/ui";
+
+export type GameApi = {
+  onStart: (scenarioId: string) => void;
+  onPauseChange: (paused: boolean) => void;
+  onExit?: () => void;
+};
+export type UIController = { 
+  timer: TimerController;
+  showMenu: () => void;
+};
+
+export function mountUI(api: GameApi): UIController {
+  const el = document.getElementById("ui-root");
+  if (!el)
+    return {
+      timer: {
+        start() {},
+        stop(_hint?: TimerHint) {},
+        reset() {},
+        pause() {},
+        resume() {},
+        getElapsedSeconds: () => 0,
+      },
+      showMenu() {},
+    };
+  let timerCtrl: TimerController | null = null;
+  let showMenuRef: (() => void) | null = null;
+  let pending: Array<() => void> = [];
+  const root = createRoot(el);
+  root.render(
+    <UIRoot
+      onStart={api.onStart}
+      onPauseChange={api.onPauseChange}
+      onExit={api.onExit}
+      bindTimerController={(ctrl) => {
+        timerCtrl = ctrl;
+        // flush any queued actions
+        pending.forEach((fn) => fn());
+        pending = [];
+      }}
+      bindMenuController={(showMenuFn) => {
+        showMenuRef = showMenuFn;
+      }}
+    />
+  );
+  return {
+    showMenu: () => {
+      if (showMenuRef) showMenuRef();
+    },
+    timer: {
+      start: () => {
+        if (timerCtrl) timerCtrl.start();
+        else pending.push(() => timerCtrl && timerCtrl.start());
+      },
+      stop: (hint?: TimerHint) => {
+        if (timerCtrl) timerCtrl.stop(hint);
+        else pending.push(() => timerCtrl && timerCtrl.stop(hint));
+      },
+      reset: () => {
+        if (timerCtrl) timerCtrl.reset();
+        else pending.push(() => timerCtrl && timerCtrl.reset());
+      },
+      pause: () => {
+        if (timerCtrl) timerCtrl.pause();
+        else pending.push(() => timerCtrl && timerCtrl.pause());
+      },
+      resume: () => {
+        if (timerCtrl) timerCtrl.resume();
+        else pending.push(() => timerCtrl && timerCtrl.resume());
+      },
+      getElapsedSeconds: () => {
+        if (timerCtrl) return timerCtrl.getElapsedSeconds();
+        return 0;
+      },
+    },
+  };
+}
