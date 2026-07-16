@@ -62,7 +62,8 @@ function createEmptyStats(): StoredStats {
   gameRunning: boolean = false;
 
   generatorMetadata?: Map<string, {
-    config: unknown;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    config: any;
     position: { x: number; y: number; z: number };
     targets: Target[];
   }>;
@@ -72,8 +73,8 @@ function createEmptyStats(): StoredStats {
   private currentScenarioTargetCount = 3; // Fixed to 3 for Gridshot
   private currentScenarioTargetScale = 0.4;
   private lastHitTime: number | null = null;
-  private gameStartTime: number | null = null;
-  private timeRemaining: number = GAME_DURATION_SECONDS;
+  public gameStartTime: number | null = null;
+  public timeRemaining: number = GAME_DURATION_SECONDS;
   private paused = false;
   private cameraWorldPos = new Vector3();
   private cameraViewDir = new Vector3();
